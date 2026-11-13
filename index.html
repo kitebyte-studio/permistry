@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permistry: plugin.yml checker for Paper and Spigot plugins</title>
+<meta name="description" content="Paste a plugin.yml or drop a plugin jar. Permistry finds what stops a Paper or Spigot plugin from loading, including permission loops that crash the whole server. Runs in your browser, nothing is uploaded.">
+<meta property="og:title" content="Permistry: plugin.yml checker">
+<meta property="og:description" content="Finds the plugin.yml mistakes that stop a Paper or Spigot plugin from loading, or crash the server. Runs in your browser.">
+<meta property="og:type" content="website">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<script type="module" src="assets/app.js"></script>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="./" aria-label="Permistry home">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 6 13h10z" fill="#FF8C42"/><path d="M16 2l10 11H16z" fill="#2EC4B6"/><path d="M6 13l10 15V13z" fill="#2EC4B6"/><path d="M26 13 16 28V13z" fill="#FF8C42"/><path d="M16 28c-1 2 1 2 0 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    <span>Permistry</span>
+  </a>
+  <nav>
+    <a href="#checks">What it checks</a>
+    <a href="https://github.com/kitebyte-studio/permistry">GitHub</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>Check your plugin.yml before the server does.</h1>
+    <p class="lead">Paste a <code>plugin.yml</code> or drop your plugin <code>.jar</code>. Permistry reads it the way a Paper server does and tells you in plain words what will break. Everything runs in your browser and nothing is uploaded.</p>
+  </section>
+
+  <section class="tool" aria-label="Checker">
+    <div class="pane editor-pane">
+      <div class="pane-head">
+        <span class="file-name" id="fileName">plugin.yml</span>
+        <div class="actions">
+          <button type="button" id="openBtn">Open file</button>
+          <button type="button" id="exampleBtn" class="primary">Load a broken example</button>
+          <button type="button" id="clearBtn">Clear</button>
+          <input type="file" id="fileInput" accept=".yml,.yaml,.jar" hidden>
+        </div>
+      </div>
+      <div class="editor">
+        <div class="gutter" id="gutter" aria-hidden="true"></div>
+        <div class="code">
+          <div class="flash" id="flash" aria-hidden="true"></div>
+          <textarea id="input" wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="plugin.yml contents" placeholder="name: MyPlugin
+version: '1.0.0'
+main: com.example.myplugin.MyPlugin
+api-version: '26.3'"></textarea>
+        </div>
+      </div>
+      <p class="hint">You can also drop a <code>plugin.yml</code>, <code>paper-plugin.yml</code> or <code>.jar</code> anywhere on the page.</p>
+    </div>
+
+    <div class="pane results-pane" aria-live="polite">
+      <div id="verdict" class="verdict verdict-empty"></div>
+      <ul id="findings" class="findings"></ul>
+    </div>
+  </section>
+
+  <section id="checks" class="checks">
+    <h2>What it checks</h2>
+    <div class="grid">
+      <article>
+        <h3>Permission loops that crash the server</h3>
+        <p>If <code>a</code> lists <code>b</code> as a child and <code>b</code> lists <code>a</code>, Paper follows the chain until it runs out of stack. We tried it: the whole server went down at startup.</p>
+      </article>
+      <article>
+        <h3>A plugin that depends on itself</h3>
+        <p>Put your own plugin name in <code>depend</code>, <code>softdepend</code> or <code>loadbefore</code> and Paper 26.3 crashes before any world loads.</p>
+      </article>
+      <article>
+        <h3>Typos the server ignores in silence</h3>
+        <p><code>softdepends</code>, <code>alias</code>, <code>Permissions</code> with a capital P. Unknown keys are skipped without a word. Permistry tells you which key you meant.</p>
+      </article>
+      <article>
+        <h3>Command permissions that do not exist</h3>
+        <p>The command checks <code>homes.hmoe</code> while the list has <code>homes.home</code>. Players get "no permission" and you get a bug report.</p>
+      </article>
+      <article>
+        <h3>Everything that stops the plugin from loading</h3>
+        <p>Spaces or reserved words in the name, <code>depend</code> written as text instead of a list, a bad <code>load</code> value, broken library coordinates, a main class missing from the jar.</p>
+      </article>
+      <article>
+        <h3>Keys that cancel each other out</h3>
+        <p>Two <code>commands:</code> blocks in one file? The server keeps the last one, and every command in the first block is gone.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="tested">
+    <h2>Tested on a real server</h2>
+    <p>Every rule was checked by loading broken plugins on Paper 26.3 (build 249). When the server prints an error, Permistry shows the same line, so you know what to look for in your logs. <a href="https://github.com/kitebyte-studio/permistry/blob/main/docs/paper-behaviour.md">See what the server did in each case.</a></p>
+  </section>
+</main>
+
+<footer>
+  <p>Permistry is made by Kitebyte. It is not affiliated with Mojang, Microsoft, PaperMC or SpigotMC.</p>
+  <p>The code is written with AI coding tools, and every rule is tested on a real server. Open source under the MIT license. <a href="vendor/THIRD-PARTY-LICENSES.txt">Third-party licenses</a>.</p>
+</footer>
+
+<div id="dropOverlay" class="drop-overlay" hidden><div>Drop the file to check it</div></div>
+</body>
+</html>

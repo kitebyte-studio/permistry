@@ -1,0 +1,7 @@
+name: P36ChildrenString
+version: '1.0'
+main: com.example.probe.ProbePlugin
+api-version: '26.3'
+permissions:
+  p36.all:
+    children: p36.use

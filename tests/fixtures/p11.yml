@@ -1,0 +1,4 @@
+name: P11WrongMain
+version: '1.0'
+main: studio.kitebyte.template.Nope
+api-version: '26.3'

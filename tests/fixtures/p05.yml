@@ -1,0 +1,4 @@
+name: P05Api121
+version: '1.0'
+main: com.example.probe.ProbePlugin
+api-version: '1.21'

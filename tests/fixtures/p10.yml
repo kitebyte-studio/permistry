@@ -1,0 +1,4 @@
+name: P10BukkitMain
+version: '1.0'
+main: org.bukkit.Foo
+api-version: '26.3'

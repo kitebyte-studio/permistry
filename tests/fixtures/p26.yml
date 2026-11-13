@@ -1,0 +1,9 @@
+name: P26Yaml11
+version: '1.0'
+main: com.example.probe.ProbePlugin
+api-version: '26.3'
+permissions:
+  p26.all:
+    default: yes
+    children:
+      p26.use: yes

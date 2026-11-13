@@ -1,0 +1,8 @@
+name: P20ChildString
+version: '1.0'
+main: com.example.probe.ProbePlugin
+api-version: '26.3'
+permissions:
+  p20.all:
+    children:
+      p20.use: 'true'

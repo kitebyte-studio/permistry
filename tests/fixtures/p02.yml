@@ -1,0 +1,3 @@
+name: P02ApiMissing
+version: '1.0'
+main: com.example.probe.ProbePlugin

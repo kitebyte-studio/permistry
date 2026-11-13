@@ -1,0 +1,7 @@
+name: P31ChildList
+version: '1.0'
+main: com.example.probe.ProbePlugin
+api-version: '26.3'
+permissions:
+  p31.all:
+    children: [p31.use, p31.other]

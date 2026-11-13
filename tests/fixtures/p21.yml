@@ -1,0 +1,12 @@
+name: P21Cycle
+version: '1.0'
+main: com.example.probe.ProbePlugin
+api-version: '26.3'
+permissions:
+  p21.a:
+    default: true
+    children:
+      p21.b: true
+  p21.b:
+    children:
+      p21.a: true

@@ -1,0 +1,13 @@
+name: P39CycleFalse
+version: '1.0'
+main: com.example.probe.ProbePlugin
+api-version: '26.3'
+permissions:
+  p39.a:
+    default: false
+    children:
+      p39.b: true
+  p39.b:
+    default: false
+    children:
+      p39.a: true

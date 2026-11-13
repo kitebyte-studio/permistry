@@ -1,0 +1,4 @@
+name: P32Api2610
+version: '1.0'
+main: com.example.probe.ProbePlugin
+api-version: 26.10

@@ -1,0 +1,9 @@
+name: P22ColonCmd
+version: '1.0'
+main: com.example.probe.ProbePlugin
+api-version: '26.3'
+commands:
+  p22:cmd:
+    description: x
+  p22ok:
+    aliases: [p22:al, p22al]

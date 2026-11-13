@@ -1,0 +1,11 @@
+name: P27DefaultAliases
+version: '1.0'
+main: com.example.probe.ProbePlugin
+api-version: '26.3'
+permissions:
+  p27.a:
+    default: admin
+  p27.b:
+    default: '!op'
+  p27.c:
+    default: notop

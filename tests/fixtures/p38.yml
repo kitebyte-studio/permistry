@@ -1,0 +1,11 @@
+name: P38CycleNoDefault
+version: '1.0'
+main: com.example.probe.ProbePlugin
+api-version: '26.3'
+permissions:
+  p38.a:
+    children:
+      p38.b: true
+  p38.b:
+    children:
+      p38.a: true
