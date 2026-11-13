@@ -2,7 +2,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 
 const SITE = 'https://kitebytestudio.com/';
-const EMAIL = 'kitebyte.studio@gmail.com';
+const EMAIL = 'support@kitebytestudio.com';
 const UPDATED = '14 November 2026';
 const root = new URL('../', import.meta.url);
 
@@ -86,7 +86,7 @@ const head = (title) => `<!doctype html>
 
 const foot = `<footer>
   <p>Permistry is made by Kitebyte. It is not affiliated with Mojang, Microsoft, PaperMC or SpigotMC.</p>
-  <p><a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="refunds.html">Refunds</a> · <a href="contact.html">Contact</a></p>
+  <p><a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a> · <a href="refunds.html">Refunds</a> · <a href="contact.html">Contact</a> · <a href="mailto:support@kitebytestudio.com">support@kitebytestudio.com</a></p>
 </footer>
 </body>
 </html>
