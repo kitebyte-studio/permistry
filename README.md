@@ -52,4 +52,4 @@ MIT, see [LICENSE](LICENSE). Bundled libraries: js-yaml and fflate (both MIT), s
 [vendor/THIRD-PARTY-LICENSES.txt](vendor/THIRD-PARTY-LICENSES.txt).
 
 Permistry is made by Kitebyte and is not affiliated with Mojang, Microsoft, PaperMC or
-SpigotMC. The code is written with AI coding tools, and every rule is tested on a real server.
+SpigotMC. Every rule is tested on a real server.
