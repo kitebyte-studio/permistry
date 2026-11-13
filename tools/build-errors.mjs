@@ -3,7 +3,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { ERRORS } from './errors-data.mjs';
 
-const SITE = 'https://kitebyte-studio.github.io/permistry/';
+const SITE = 'https://kitebytestudio.com/';
 const root = new URL('../', import.meta.url);
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);

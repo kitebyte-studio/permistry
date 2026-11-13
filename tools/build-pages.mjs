@@ -1,7 +1,7 @@
 // Generates the legal and contact pages into legal/. Run: node tools/build-pages.mjs
 import { mkdirSync, writeFileSync } from 'node:fs';
 
-const SITE = 'https://kitebyte-studio.github.io/permistry/';
+const SITE = 'https://kitebytestudio.com/';
 const EMAIL = 'kitebyte.studio@gmail.com';
 const UPDATED = '14 November 2026';
 const root = new URL('../', import.meta.url);

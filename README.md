@@ -4,7 +4,7 @@ A `plugin.yml` checker for Paper and Spigot plugins. Paste the file or drop the 
 and it tells you in plain words what the server will do with it: crash, refuse to load the
 plugin, quietly drop a command or permission, or load it fine.
 
-**Use it:** https://kitebyte-studio.github.io/permistry/
+**Use it:** https://kitebytestudio.com/
 
 Everything runs in your browser. Nothing is uploaded.
 
