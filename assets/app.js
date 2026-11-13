@@ -56,7 +56,7 @@ const fileNameEl = $('fileName');
 const fileInput = $('fileInput');
 
 let jarContext = null; // { names, mainMajor, ymlName, jarName }
-let currentName = 'plugin.yml';
+let currentFile = null; // name of an opened file; null for pasted text (kind is guessed)
 let timer = null;
 
 function esc(s) {
@@ -172,10 +172,20 @@ function run() {
   const text = input.value;
   if (!text.trim() && !jarContext) {
     renderEmpty();
+    if (!currentFile) fileNameEl.textContent = 'plugin.yml';
     return;
   }
-  const result = validate(text, { fileName: currentName });
-  if (jarContext) checkJar(result, jarContext);
+  let result;
+  try {
+    result = jarContext && !jarContext.ymlName
+      ? { kind: 'plugin', data: null, findings: [], info: [], verdict: 'ok' }
+      : validate(text, { fileName: currentFile || undefined });
+    if (jarContext) checkJar(result, jarContext);
+  } catch (e) {
+    showError(`Permistry hit an internal error on this file (${e && e.message}). Please report it on GitHub.`);
+    return;
+  }
+  if (!currentFile) fileNameEl.textContent = result.kind === 'paper' ? 'paper-plugin.yml' : 'plugin.yml';
   render(result);
 }
 
@@ -184,11 +194,12 @@ function schedule() {
   timer = setTimeout(run, 200);
 }
 
+// name: the opened file's name, or null for pasted/example text.
 function setSource(text, name, jar = null) {
   input.value = text;
-  currentName = name;
+  currentFile = name;
   jarContext = jar;
-  fileNameEl.textContent = jar ? `${jar.jarName} › ${name}` : name;
+  fileNameEl.textContent = jar ? `${jar.jarName} › ${name || 'no plugin.yml'}` : name || 'plugin.yml';
   input.scrollTop = 0;
   flash.dataset.line = '';
   flash.classList.remove('on');
@@ -222,7 +233,7 @@ async function openJar(file) {
       if (cls && cls.length > 8 && cls[0] === 0xca && cls[1] === 0xfe) mainMajor = (cls[6] << 8) | cls[7];
     }
   }
-  setSource(text, ymlName || 'plugin.yml', { names, mainMajor, ymlName, jarName: file.name });
+  setSource(text, ymlName, { names, mainMajor, ymlName, jarName: file.name });
 }
 
 function showError(message) {
@@ -238,7 +249,7 @@ async function openFile(file) {
   } else if (file.size > 2_000_000) {
     showError('That file is too big to be a plugin.yml.');
   } else {
-    setSource(await file.text(), /paper-plugin\.ya?ml$/i.test(file.name) ? 'paper-plugin.yml' : 'plugin.yml');
+    setSource(await file.text(), file.name);
   }
 }
 
@@ -247,7 +258,7 @@ async function openFile(file) {
 input.addEventListener('input', () => {
   if (jarContext) {
     jarContext = null;
-    fileNameEl.textContent = currentName;
+    fileNameEl.textContent = currentFile || 'plugin.yml';
   }
   schedule();
 });
@@ -261,7 +272,7 @@ input.addEventListener('keydown', (e) => {
     e.preventDefault();
     const { selectionStart: s, selectionEnd: t } = input;
     input.setRangeText('  ', s, t, 'end');
-    schedule();
+    input.dispatchEvent(new Event('input'));
   }
 });
 
@@ -270,9 +281,9 @@ findingsEl.addEventListener('click', (e) => {
   if (btn) jumpTo(Number(btn.dataset.line));
 });
 
-$('exampleBtn').addEventListener('click', () => setSource(EXAMPLE, 'plugin.yml'));
+$('exampleBtn').addEventListener('click', () => setSource(EXAMPLE, null));
 $('clearBtn').addEventListener('click', () => {
-  setSource('', 'plugin.yml');
+  setSource('', null);
   input.focus();
 });
 $('openBtn').addEventListener('click', () => fileInput.click());

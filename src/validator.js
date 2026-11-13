@@ -65,13 +65,27 @@ function typeOf(v) {
 }
 
 // What Java's toString() would print for the value SnakeYAML produced.
-function javaText(v, raw) {
+// `budget` caps the work: YAML anchors can make a small file expand hugely.
+function javaText(v, raw, budget = { left: 2000 }) {
+  if (budget.left <= 0) return '…';
+  budget.left -= 1;
   switch (typeOf(v)) {
     case 'number':
       if (raw && /^[-+]?\d+$/.test(raw.trim())) return String(v);
       return Number.isInteger(v) ? v.toFixed(1) : String(v);
     case 'boolean': return v ? 'true' : 'false';
-    case 'list': return '[' + v.map((x) => javaText(x)).join(', ') + ']';
+    case 'list': {
+      const parts = [];
+      for (const x of v) {
+        if (budget.left <= 0) {
+          parts.push('…');
+          break;
+        }
+        parts.push(javaText(x, undefined, budget));
+      }
+      return '[' + parts.join(', ') + ']';
+    }
+    case 'map': return '{…}';
     case 'null': return 'null';
     default: return String(v);
   }
@@ -91,7 +105,9 @@ function levenshtein(a, b) {
   return dp[b.length];
 }
 
-function closest(word, candidates, max = 2) {
+// `prefix`: treat "alias" -> "aliases" as a near miss. Right for key names,
+// wrong for permission names, where "ess.tp" and "ess.tpa" are both real.
+function closest(word, candidates, max = 2, prefix = true) {
   const norm = (s) => s.toLowerCase().replace(/[_\s]/g, '-');
   let best = null;
   let bestD = Infinity;
@@ -99,8 +115,9 @@ function closest(word, candidates, max = 2) {
     if (c === word) continue;
     const a = norm(word);
     const b = norm(c);
+    if (!prefix && (a.startsWith(b) || b.startsWith(a))) continue;
     let d = a === b ? 0 : levenshtein(a, b);
-    if (d > 1 && a.length >= 4 && (b.startsWith(a) || a.startsWith(b)) && Math.abs(a.length - b.length) <= 3) d = 1;
+    if (prefix && d > 1 && a.length >= 4 && (b.startsWith(a) || a.startsWith(b)) && Math.abs(a.length - b.length) <= 3) d = 1;
     if (d < bestD) {
       bestD = d;
       best = c;
@@ -122,6 +139,12 @@ export function validate(source, opts = {}) {
 
   if (!text.trim()) {
     ctx.add('refuse', 'empty', null, 'The file is empty', 'Paste the contents of your plugin.yml, or drop the plugin .jar.');
+    return finish(ctx, null, opts.kind || 'plugin');
+  }
+
+  if (text.length > 400_000 || ctx.idx.lines.length > 15_000) {
+    ctx.add('warning', 'too-big', null, 'This file is too big to check',
+      'Permistry checks files up to 400 KB and 15,000 lines. A real plugin.yml is almost always much smaller: check that you pasted the right file.');
     return finish(ctx, null, opts.kind || 'plugin');
   }
 
@@ -149,10 +172,16 @@ export function validate(source, opts = {}) {
   }
 
   const kind = opts.kind || guessKind(opts.fileName, data);
-  checkDuplicates(ctx);
-  if (kind === 'paper') checkPaperPlugin(ctx, data);
-  else checkPluginYml(ctx, data);
-  checkPlaceholders(ctx, data);
+  try {
+    checkDuplicates(ctx);
+    if (kind === 'paper') checkPaperPlugin(ctx, data);
+    else checkPluginYml(ctx, data);
+    checkPlaceholders(ctx, data);
+  } catch (e) {
+    if (!(e instanceof RangeError)) throw e;
+    ctx.add('warning', 'too-deep', null, 'Could not finish the check',
+      'The file nests too deeply (very long permission chains or YAML anchors inside anchors). The results above are incomplete.');
+  }
   return finish(ctx, data, kind);
 }
 
@@ -413,9 +442,12 @@ function checkDepends(ctx, data, name) {
     if (!list) continue;
     lists[key] = list;
     const seen = new Set();
+    const occ = new Map();
     for (const raw of list) {
       const dep = raw.replace(/ /g, '_');
-      const line = ctx.idx.itemLine([key], raw);
+      const nth = occ.get(raw) || 0;
+      occ.set(raw, nth + 1);
+      const line = ctx.idx.itemLine([key], raw, nth);
       if (name && dep === name.replace(/ /g, '_')) {
         ctx.add('crash', 'depend-self', line, `The plugin lists itself in \`${key}\``,
           `${q(name)} points to itself, which makes a loop in the load order. On ${TESTED_ON} this does not just skip the plugin: the whole server crashes at startup. Remove it from the list.`,
@@ -639,10 +671,12 @@ function checkCommands(ctx, data, permNodes) {
     }
 
     if (def.permission !== undefined && def.permission !== null) {
-      const perm = javaText(def.permission);
       const pLine = ctx.idx.lineOf([...p, 'permission']);
-      if (!permNodes.has(perm.toLowerCase())) {
-        const guess = closest(perm, declared, 2);
+      // "a.b;a.c" means any one of these permissions is enough.
+      for (const part of javaText(def.permission).split(';')) {
+        const perm = part.trim();
+        if (!perm || permNodes.has(perm.toLowerCase())) continue;
+        const guess = closest(perm, declared, 2, false);
         if (guess) {
           ctx.add('warning', 'command-perm-typo', pLine, `Permission ${q(perm)} is not declared. Did you mean ${q(guess)}?`,
             `The command checks ${q(perm)}, but the permissions section only has a similar name. Players who have ${q(guess)} still will not be able to use /${name}.`,
@@ -727,7 +761,8 @@ function checkPluginYml(ctx, data) {
 // ---------- paper-plugin.yml (basic) ----------
 
 function checkPaperPlugin(ctx, data) {
-  checkUnknownKeys(ctx, data, PAPER_KEYS, [], 'top-level');
+  // Sections Paper ignores in this file get their own message below.
+  checkUnknownKeys(ctx, data, [...PAPER_KEYS, 'commands', 'depend', 'softdepend', 'loadbefore', 'libraries'], [], 'top-level');
   checkName(ctx, data);
   checkVersion(ctx, data);
   checkMain(ctx, data);

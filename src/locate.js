@@ -85,6 +85,13 @@ export function indexYaml(text) {
     if (/^[|>][-+0-9]*$/.test(raw)) blockScalarIndent = indent;
   });
 
+  const itemIndex = new Map();
+  for (const it of items) {
+    const k = it.pathKey + SEP + it.value;
+    if (!itemIndex.has(k)) itemIndex.set(k, []);
+    itemIndex.get(k).push(it.line);
+  }
+
   return {
     lines,
     keys,
@@ -103,15 +110,22 @@ export function indexYaml(text) {
       const hits = keys.get(pathKey(path));
       return hits ? hits[hits.length - 1].raw : null;
     },
-    itemLine(path, value) {
-      const pk = pathKey(path);
-      const hit = items.find((it) => it.pathKey === pk && it.value === String(value));
-      return hit ? hit.line : this.lineOf(path);
+    // Line of the nth list item with this value under `path`.
+    itemLine(path, value, nth = 0) {
+      const hits = itemIndex.get(pathKey(path) + SEP + String(value));
+      if (!hits) return this.lineOf(path);
+      return hits[Math.min(nth, hits.length - 1)];
     },
+    // Keys written more than once. Keys inside a duplicated section are left
+    // out: the whole earlier section is dropped, which is reported once.
     duplicates() {
+      const dup = new Set([...keys].filter(([, hits]) => hits.length > 1).map(([pk]) => pk));
       const out = [];
-      for (const [pk, hits] of keys) {
-        if (hits.length > 1) out.push({ path: pk.split(SEP), lines: hits.map((h) => h.line) });
+      for (const pk of dup) {
+        const path = pk.split(SEP);
+        let insideDup = false;
+        for (let n = 1; n < path.length; n++) if (dup.has(pathKey(path.slice(0, n)))) insideDup = true;
+        if (!insideDup) out.push({ path, lines: keys.get(pk).map((h) => h.line) });
       }
       return out;
     },

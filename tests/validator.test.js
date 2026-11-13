@@ -157,3 +157,57 @@ test('jar whose main class is missing', () => {
   assert.equal(r.verdict, 'refuse');
   assert.ok(codes(r).includes('jar-no-main'));
 });
+
+// ---- cases from the code review ----
+
+const HEAD = "name: A\nversion: '1'\nmain: a.B\napi-version: '26.3'\n";
+
+test('duplicate list entries point at the second line', () => {
+  const r = validate(HEAD + 'depend:\n  - Vault\n  - Vault\n');
+  assert.equal(r.findings.find((x) => x.code === 'depend-dup').line, 7);
+});
+
+test('a permission that extends a declared one is not called a typo', () => {
+  const r = validate(HEAD + 'commands:\n  tp:\n    permission: ess.tp\npermissions:\n  ess.tpa: {}\n');
+  assert.ok(!codes(r).includes('command-perm-typo'));
+});
+
+test('a;b permission syntax is split', () => {
+  const r = validate(HEAD + 'commands:\n  x:\n    permission: a.b;a.c\npermissions:\n  a.b: {}\n  a.c: {}\n');
+  assert.deepEqual(codes(r), []);
+});
+
+test('keys inside a duplicated section are not reported again', () => {
+  const r = validate(HEAD + 'commands:\n  a:\n    usage: /a\n  a:\n    usage: /a x\n');
+  assert.deepEqual(codes(r), ['duplicate-key']);
+});
+
+test('pasted paper-plugin.yml is recognised without a file name', () => {
+  const r = validate("name: P\nversion: '1'\nmain: a.B\nbootstrapper: a.Boot\napi-version: '1.21'\n");
+  assert.equal(r.kind, 'paper');
+});
+
+test('anchor bomb does not hang', () => {
+  let y = HEAD + 'x0: &a0 [v]\n';
+  for (let i = 1; i <= 26; i++) y += `x${i}: &a${i} [*a${i - 1}, *a${i - 1}]\n`;
+  y += 'depend: *a26\ncommands:\n  c:\n    aliases: *a26\n';
+  const t = Date.now();
+  validate(y);
+  assert.ok(Date.now() - t < 3000);
+});
+
+test('very long permission chain does not throw', () => {
+  let y = HEAD + 'permissions:\n';
+  for (let i = 0; i < 20000; i++) y += `  p${i}:\n    children: [p${i + 1}]\n`;
+  assert.doesNotThrow(() => validate(y));
+});
+
+test('large realistic file stays fast', () => {
+  let y = HEAD + 'commands:\n';
+  for (let i = 0; i < 2000; i++) y += `  cmd${i}:\n    aliases: [c${i}]\n    permission: x.cmd${i}\n`;
+  y += 'permissions:\n';
+  for (let i = 0; i < 2000; i++) y += `  x.cmd${i}:\n    default: op\n`;
+  const t = Date.now();
+  validate(y);
+  assert.ok(Date.now() - t < 3000, `took ${Date.now() - t} ms`);
+});
