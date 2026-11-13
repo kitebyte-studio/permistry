@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StackOverflowError in PermissibleBase.calculateChildPermissions | plugin.yml fix</title>
+<meta name="description" content="Bukkit expands permission children recursively and never checks for loops. If permission A includes B and B includes A, it keeps going until the Java stack">
+<link rel="canonical" href="https://kitebyte-studio.github.io/permistry/errors/stackoverflowerror-calculatechildpermissions.html">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../" aria-label="Permistry home">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 6 13h10z" fill="#FF8C42"/><path d="M16 2l10 11H16z" fill="#2EC4B6"/><path d="M6 13l10 15V13z" fill="#2EC4B6"/><path d="M26 13 16 28V13z" fill="#FF8C42"/><path d="M16 28c-1 2 1 2 0 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    <span>Permistry</span>
+  </a>
+  <nav>
+    <a href="./">Server errors</a>
+    <a href="../">Check a plugin.yml</a>
+  </nav>
+</header>
+<main class="doc">
+
+<p class="crumb"><a href="./">Paper and Spigot plugin.yml errors</a></p>
+<h1>StackOverflowError in PermissibleBase.calculateChildPermissions</h1>
+<div class="server"><span>Server log</span><pre>java.lang.StackOverflowError
+	at org.bukkit.permissions.PermissibleBase.calculateChildPermissions(PermissibleBase.java:207)
+	at org.bukkit.permissions.PermissibleBase.calculateChildPermissions(PermissibleBase.java:207)
+	...</pre></div>
+<h2>What it means</h2>
+<p>Bukkit expands permission children recursively and never checks for loops. If permission A includes B and B includes A, it keeps going until the Java stack runs out. On Paper 26.3 this crashed the server during startup in our test, right after the plugin was enabled.</p>
+<h2>What causes it</h2>
+<p>A loop in <code>children</code> under <code>permissions</code>: two or more permissions that include each other. It crashes at startup when any permission in the loop is given to operators by default (<code>default: op</code>, <code>default: true</code>, or no <code>default</code> at all, which means op), because the console is an operator. With <code>default: false</code> the server starts, and the same code runs later when a player is given one of them.</p>
+<h2>How to fix it</h2>
+<div class="compare">
+  <div><p class="label bad">Before</p><pre>permissions:
+  myplugin.*:
+    default: op
+    children:
+      myplugin.admin: true
+  myplugin.admin:
+    children:
+      myplugin.*: true</pre></div>
+  <div><p class="label good">After</p><pre>permissions:
+  myplugin.*:
+    default: op
+    children:
+      myplugin.admin: true
+  myplugin.admin:
+    children:
+      myplugin.reload: true</pre></div>
+</div>
+<p>Loops are easy to miss when a wildcard like <code>myplugin.*</code> is a child of something it also contains. Permistry draws the chain for you, for example <code>myplugin.* → myplugin.admin → myplugin.*</code>.</p>
+<div class="cta">
+  <p><strong>Check the whole file.</strong> Paste your plugin.yml or drop the plugin jar into Permistry. It finds this and about 40 other problems, and explains each one in plain words. It runs in your browser and nothing is uploaded.</p>
+  <a class="button" href="../">Open the checker</a>
+</div>
+
+</main>
+<footer>
+  <p>Permistry is made by Kitebyte. It is not affiliated with Mojang, Microsoft, PaperMC or SpigotMC.</p>
+  <p>Every error on this site was reproduced on Paper 26.3 (build 249). <a href="https://github.com/kitebyte-studio/permistry/blob/main/docs/paper-behaviour.md">Test results</a>.</p>
+</footer>
+</body>
+</html>

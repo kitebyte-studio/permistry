@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper and Spigot plugin.yml errors explained</title>
+<meta name="description" content="What each plugin.yml error in a Paper or Spigot server log means and how to fix it. Every message was reproduced on a real Paper 26.3 server.">
+<link rel="canonical" href="https://kitebyte-studio.github.io/permistry/errors/">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../" aria-label="Permistry home">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 6 13h10z" fill="#FF8C42"/><path d="M16 2l10 11H16z" fill="#2EC4B6"/><path d="M6 13l10 15V13z" fill="#2EC4B6"/><path d="M26 13 16 28V13z" fill="#FF8C42"/><path d="M16 28c-1 2 1 2 0 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    <span>Permistry</span>
+  </a>
+  <nav>
+    <a href="./">Server errors</a>
+    <a href="../">Check a plugin.yml</a>
+  </nav>
+</header>
+<main class="doc">
+
+<h1>Paper and Spigot plugin.yml errors, explained</h1>
+<p class="lead">Each message below was printed by a real Paper 26.3 server while loading a test plugin with one mistake in its plugin.yml. Find the line from your log, see what causes it and how to fix it.</p>
+<ul class="error-list">
+  <li><a href="cannot-add-self-loop-edge.html">&quot;Cannot add self-loop edge on node&quot; crashes the server at startup</a><p>The plugin lists its own name in <code>depend</code>, <code>softdepend</code> or <code>loadbefore</code>. We reproduced the crash with each of the three keys.</p></li>
+  <li><a href="stackoverflowerror-calculatechildpermissions.html">StackOverflowError in PermissibleBase.calculateChildPermissions</a><p>A loop in <code>children</code> under <code>permissions</code>: two or more permissions that include each other. It crashes at startup when any permission in the loop is given to operators by default (<code>default: op</code>, <code>default: true</code>, or no <code>default</code> at all, which means op), because the console is an operator. With <code>default: false</code> the server starts, and the same code runs later when a player is given one of them.</p></li>
+  <li><a href="restricted-name-space-character.html">&quot;Restricted name, cannot use 0x20 (space character) in a plugin name&quot;</a><p>The <code>name</code> in plugin.yml contains a space.</p></li>
+  <li><a href="restricted-name-cannot-use-as-plugin-name.html">&quot;Restricted name, cannot use ... as a plugin name&quot;</a><p>The plugin is named <code>bukkit</code>, <code>minecraft</code>, <code>mojang</code>, <code>spigot</code> or <code>paper</code>. Upper or lower case does not matter.</p></li>
+  <li><a href="name-contains-invalid-characters.html">&quot;name ... contains invalid characters&quot;</a><p>The <code>name</code> in plugin.yml has a character outside that set.</p></li>
+  <li><a href="main-may-not-be-within-the-org-bukkit-namespace.html">&quot;main may not be within the org.bukkit namespace&quot;</a><p>The <code>main</code> value starts with <code>org.bukkit.</code>, usually because the class was created inside the wrong package.</p></li>
+  <li><a href="version-is-not-defined.html">&quot;version is not defined&quot; (also &quot;name is not defined&quot;, &quot;main is not defined&quot;)</a><p>plugin.yml has no <code>version</code> (or <code>name</code>, or <code>main</code>). It also happens when the key is there but misspelled or indented under another key.</p></li>
+  <li><a href="depend-is-of-wrong-type.html">&quot;depend is of wrong type&quot; (also softdepend, loadbefore, authors)</a><p>The value is written as plain text instead of a list.</p></li>
+  <li><a href="commands-are-of-wrong-type.html">&quot;commands are of wrong type&quot;</a><p>Usually a command written on one line, like <code>commands: home</code>, or a command whose description is put right after its name.</p></li>
+  <li><a href="load-is-not-a-valid-choice.html">&quot;load is not a valid choice&quot;</a><p><code>load</code> is set to something other than <code>STARTUP</code> or <code>POSTWORLD</code>.</p></li>
+  <li><a href="unsupported-api-version.html">&quot;Unsupported API version&quot;</a><p>The plugin was built for a newer Minecraft version than the server runs, or <code>api-version</code> has a typo such as <code>26.10</code> instead of <code>26.1</code>.</p></li>
+  <li><a href="legacy-plugin-does-not-specify-an-api-version.html">&quot;Legacy plugin ... does not specify an api-version&quot;</a><p>plugin.yml has no <code>api-version</code>, or it is lower than 1.13.</p></li>
+  <li><a href="default-key-contained-unknown-value.html">&quot;&#39;default&#39; key contained unknown value&quot;</a><p>The <code>default</code> of a permission is not one of the allowed values: <code>true</code>, <code>false</code>, <code>op</code>, <code>not op</code> (also written <code>notop</code>, <code>!op</code>, <code>admin</code>, <code>isop</code> and a few other spellings).</p></li>
+  <li><a href="child-contains-invalid-value.html">&quot;Child &#39;...&#39; contains invalid value&quot;</a><p>Usually <code>true</code> written in quotes, which makes it text instead of a yes/no value.</p></li>
+  <li><a href="could-not-load-command-illegal-characters.html">&quot;Could not load command ... Illegal Characters&quot;</a><p>The command or alias name contains <code>:</code>. The colon is reserved for the <code>plugin:command</code> form that the server creates on its own.</p></li>
+  <li><a href="bad-artifact-coordinates.html">&quot;Bad artifact coordinates ..., expected format is &lt;groupId&gt;:&lt;artifactId&gt;:&lt;version&gt;&quot;</a><p>An entry in <code>libraries</code> is missing the group, artifact or version part.</p></li>
+  <li><a href="found-character-tab-that-cannot-start-any-token.html">&quot;found character &#39;\t(TAB)&#39; that cannot start any token&quot;</a><p>A line is indented with a Tab. The line number is in the message.</p></li>
+  <li><a href="unknown-missing-dependency-plugins.html">&quot;Unknown/missing dependency plugins&quot;</a><p>The required plugin is missing, or the name in <code>depend</code> does not match the other plugin&#39;s <code>name</code> exactly (case matters).</p></li>
+  <li><a href="paper-plugin-api-version-value-required.html">paper-plugin.yml: &quot;[api-version] ... A value is required for this field&quot;</a><p>paper-plugin.yml has no <code>api-version</code>.</p></li>
+  <li><a href="classnotfoundexception-main-class.html">ClassNotFoundException for the plugin main class</a><p>A typo in <code>main</code>, a package that was renamed without updating plugin.yml, or a jar built without the compiled classes.</p></li>
+</ul>
+
+</main>
+<footer>
+  <p>Permistry is made by Kitebyte. It is not affiliated with Mojang, Microsoft, PaperMC or SpigotMC.</p>
+  <p>Every error on this site was reproduced on Paper 26.3 (build 249). <a href="https://github.com/kitebyte-studio/permistry/blob/main/docs/paper-behaviour.md">Test results</a>.</p>
+</footer>
+</body>
+</html>

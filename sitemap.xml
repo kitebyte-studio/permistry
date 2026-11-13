@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://kitebyte-studio.github.io/permistry/</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/cannot-add-self-loop-edge.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/stackoverflowerror-calculatechildpermissions.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/restricted-name-space-character.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/restricted-name-cannot-use-as-plugin-name.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/name-contains-invalid-characters.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/main-may-not-be-within-the-org-bukkit-namespace.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/version-is-not-defined.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/depend-is-of-wrong-type.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/commands-are-of-wrong-type.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/load-is-not-a-valid-choice.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/unsupported-api-version.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/legacy-plugin-does-not-specify-an-api-version.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/default-key-contained-unknown-value.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/child-contains-invalid-value.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/could-not-load-command-illegal-characters.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/bad-artifact-coordinates.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/found-character-tab-that-cannot-start-any-token.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/unknown-missing-dependency-plugins.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/paper-plugin-api-version-value-required.html</loc></url>
+  <url><loc>https://kitebyte-studio.github.io/permistry/errors/classnotfoundexception-main-class.html</loc></url>
+</urlset>

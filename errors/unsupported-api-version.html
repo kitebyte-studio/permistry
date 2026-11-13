@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unsupported API version | plugin.yml fix</title>
+<meta name="description" content="api-version is the oldest server version the plugin supports. When it is newer than the server, the server refuses the plugin.">
+<link rel="canonical" href="https://kitebyte-studio.github.io/permistry/errors/unsupported-api-version.html">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../" aria-label="Permistry home">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 6 13h10z" fill="#FF8C42"/><path d="M16 2l10 11H16z" fill="#2EC4B6"/><path d="M6 13l10 15V13z" fill="#2EC4B6"/><path d="M26 13 16 28V13z" fill="#FF8C42"/><path d="M16 28c-1 2 1 2 0 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    <span>Permistry</span>
+  </a>
+  <nav>
+    <a href="./">Server errors</a>
+    <a href="../">Check a plugin.yml</a>
+  </nav>
+</header>
+<main class="doc">
+
+<p class="crumb"><a href="./">Paper and Spigot plugin.yml errors</a></p>
+<h1>&quot;Unsupported API version&quot;</h1>
+<div class="server"><span>Server log</span><pre>org.bukkit.plugin.InvalidPluginException: Unsupported API version 26.9</pre></div>
+<h2>What it means</h2>
+<p><code>api-version</code> is the oldest server version the plugin supports. When it is newer than the server, the server refuses the plugin.</p>
+<h2>What causes it</h2>
+<p>The plugin was built for a newer Minecraft version than the server runs, or <code>api-version</code> has a typo such as <code>26.10</code> instead of <code>26.1</code>.</p>
+<h2>How to fix it</h2>
+<div class="compare">
+  <div><p class="label bad">Before</p><pre>api-version: &#39;26.9&#39;   # server runs 26.3</pre></div>
+  <div><p class="label good">After</p><pre>api-version: &#39;26.3&#39;</pre></div>
+</div>
+<p>If you are a server owner, update the server or find a plugin version for your Minecraft version. If you are the developer, set <code>api-version</code> to the oldest version you actually support. Unquoted values are read as text in current Paper, so <code>26.10</code> stays <code>26.10</code>.</p>
+<div class="cta">
+  <p><strong>Check the whole file.</strong> Paste your plugin.yml or drop the plugin jar into Permistry. It finds this and about 40 other problems, and explains each one in plain words. It runs in your browser and nothing is uploaded.</p>
+  <a class="button" href="../">Open the checker</a>
+</div>
+
+</main>
+<footer>
+  <p>Permistry is made by Kitebyte. It is not affiliated with Mojang, Microsoft, PaperMC or SpigotMC.</p>
+  <p>Every error on this site was reproduced on Paper 26.3 (build 249). <a href="https://github.com/kitebyte-studio/permistry/blob/main/docs/paper-behaviour.md">Test results</a>.</p>
+</footer>
+</body>
+</html>

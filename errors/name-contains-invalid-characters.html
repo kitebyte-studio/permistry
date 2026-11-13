@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>name ... contains invalid characters | plugin.yml fix</title>
+<meta name="description" content="The plugin name may only contain letters A to Z, digits, _, . and -. Anything else, including letters with accents or symbols such as !, &amp; or @, makes the ">
+<link rel="canonical" href="https://kitebyte-studio.github.io/permistry/errors/name-contains-invalid-characters.html">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../" aria-label="Permistry home">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 6 13h10z" fill="#FF8C42"/><path d="M16 2l10 11H16z" fill="#2EC4B6"/><path d="M6 13l10 15V13z" fill="#2EC4B6"/><path d="M26 13 16 28V13z" fill="#FF8C42"/><path d="M16 28c-1 2 1 2 0 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    <span>Permistry</span>
+  </a>
+  <nav>
+    <a href="./">Server errors</a>
+    <a href="../">Check a plugin.yml</a>
+  </nav>
+</header>
+<main class="doc">
+
+<p class="crumb"><a href="./">Paper and Spigot plugin.yml errors</a></p>
+<h1>&quot;name ... contains invalid characters&quot;</h1>
+<div class="server"><span>Server log</span><pre>org.bukkit.plugin.InvalidDescriptionException: name &#39;My!Plugin&#39; contains invalid characters.</pre></div>
+<h2>What it means</h2>
+<p>The plugin name may only contain letters A to Z, digits, <code>_</code>, <code>.</code> and <code>-</code>. Anything else, including letters with accents or symbols such as <code>!</code>, <code>&amp;</code> or <code>@</code>, makes the server refuse the plugin.</p>
+<h2>What causes it</h2>
+<p>The <code>name</code> in plugin.yml has a character outside that set.</p>
+<h2>How to fix it</h2>
+<div class="compare">
+  <div><p class="label bad">Before</p><pre>name: My!Plugin</pre></div>
+  <div><p class="label good">After</p><pre>name: MyPlugin</pre></div>
+</div>
+<p>The pretty name players see can go in <code>description</code> or <code>prefix</code> instead.</p>
+<div class="cta">
+  <p><strong>Check the whole file.</strong> Paste your plugin.yml or drop the plugin jar into Permistry. It finds this and about 40 other problems, and explains each one in plain words. It runs in your browser and nothing is uploaded.</p>
+  <a class="button" href="../">Open the checker</a>
+</div>
+
+</main>
+<footer>
+  <p>Permistry is made by Kitebyte. It is not affiliated with Mojang, Microsoft, PaperMC or SpigotMC.</p>
+  <p>Every error on this site was reproduced on Paper 26.3 (build 249). <a href="https://github.com/kitebyte-studio/permistry/blob/main/docs/paper-behaviour.md">Test results</a>.</p>
+</footer>
+</body>
+</html>
