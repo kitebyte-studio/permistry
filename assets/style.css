@@ -285,3 +285,16 @@ footer p { margin: 4px 0; }
 .steps li { margin: 8px 0; }
 .doc h3 { font-size: 1rem; margin: 18px 0 4px; }
 .pro-note { margin-top: 18px; padding: 14px 16px; border: 1px dashed var(--line); border-radius: 10px; color: var(--muted); }
+
+/* pro page */
+.buy-box { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin: 22px 0 8px; padding: 18px 20px; background: var(--panel); border: 1px solid var(--accent); border-radius: 12px; }
+.buy-box .price { margin: 0; font-size: 2rem; font-weight: 700; color: var(--text); }
+.buy-box .price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+.buy-box p { margin: 4px 0 0; }
+.button.big { padding: 12px 22px; font-size: 1.05rem; }
+.plan h3 { margin: 0 0 6px; }
+.plan p { margin: 0; }
+.terminal { padding: 14px 16px; background: var(--code-bg); border: 1px solid var(--line); border-radius: 10px; font: 13px/1.55 var(--mono); color: var(--text); overflow: auto; white-space: pre; }
+.facts { color: var(--muted); padding-left: 20px; }
+.facts li { margin: 6px 0; }
+.pro-teaser { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }

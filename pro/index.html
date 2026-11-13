@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permistry Pro: plugin.yml checks in your build and GitHub Actions</title>
+<meta name="description" content="Run Permistry in your terminal, Gradle build and GitHub Actions. Catch plugin.yml mistakes that crash a Paper server before they ship. $9 one-time.">
+<link rel="canonical" href="https://kitebytestudio.com/pro/">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../" aria-label="Permistry home">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 6 13h10z" fill="#FF8C42"/><path d="M16 2l10 11H16z" fill="#2EC4B6"/><path d="M6 13l10 15V13z" fill="#2EC4B6"/><path d="M26 13 16 28V13z" fill="#FF8C42"/><path d="M16 28c-1 2 1 2 0 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    <span>Permistry</span>
+  </a>
+  <nav>
+    <a href="../errors/">Server errors</a>
+    <a href="../">Check a plugin.yml</a>
+  </nav>
+</header>
+
+<main class="doc wide">
+  <h1>Permistry Pro: catch broken plugin.yml files before they ship</h1>
+  <p class="lead">The same checks as the free web checker, in your terminal, your Gradle build and GitHub Actions. A permission loop or a plugin that depends on itself fails the build instead of crashing a server.</p>
+
+  <div class="buy-box">
+    <div>
+      <p class="price">$9 <span>one-time</span></p>
+      <p>Use it in all your plugin projects, including commercial ones. Updates included.</p>
+    </div>
+    <a class="button big" id="buyLink" href="https://www.creem.io/product/prod_3eVQzAz2M7oOrFbIfyYS7v">Buy Permistry Pro</a>
+  </div>
+
+  <h2>What you get</h2>
+  <div class="plans">
+    <article class="plan">
+      <h3>GitHub Action</h3>
+      <p>Each problem shows up on the exact line of plugin.yml in your pull request, with a summary table on the run page. The step fails when something would crash the server, stop the plugin from loading or drop a command or permission.</p>
+    </article>
+    <article class="plan">
+      <h3>Command line tool</h3>
+      <p>Checks plugin.yml, paper-plugin.yml and built jars from the terminal. Point it at your project folder and it finds the files itself. Text or JSON output and exit codes for scripts.</p>
+    </article>
+    <article class="plan">
+      <h3>Build and git setup</h3>
+      <p>A ready Gradle task that runs after <code>jar</code>, workflows for Gradle and Maven, and a pre-commit hook. Copy one folder and add one step.</p>
+    </article>
+  </div>
+
+  <h2>What it looks like</h2>
+  <pre class="terminal">$ node .github/actions/permistry/cli.mjs
+src/main/resources/plugin.yml
+  CRASH         line 13: Permission loop
+                hometeleport.* → hometeleport.admin → hometeleport.*. The server follows
+                children with no loop check and dies with StackOverflowError.
+  WARNING       line 5: Unknown top-level key softdepends. Did you mean softdepend?
+  WARNING       line 8: Permission hometeleport.hmoe is not declared. Did you mean hometeleport.home?
+
+build/libs/HomeTeleport-1.0.jar (plugin.yml inside the jar)
+  WILL NOT LOAD Main class com.example.hometeleport.HomeTeleport is not in the jar
+
+Checked 2 files: 1 crash, 1 blocks loading, 2 warnings.</pre>
+
+  <h2>Details</h2>
+  <ul class="facts">
+    <li>Checks the plugin.yml inside the built jar too: main class present, Java version it was compiled for, <code>${version}</code> placeholders the build forgot to replace.</li>
+    <li>Needs Node.js 18 or newer, which GitHub runners already have. Nothing else to install.</li>
+    <li>Runs offline. Your files never leave your machine or your CI.</li>
+    <li>Same rules as the web checker, each one tested on a real Paper 26.3 server. <a href="../errors/">See the errors it explains</a>.</li>
+  </ul>
+
+  <h2>Questions</h2>
+  <h3>How do I get it after paying?</h3>
+  <p>Right after payment you can download the zip from your receipt email and from your Creem customer portal. New versions appear in the portal.</p>
+  <h3>Is the web checker still free?</h3>
+  <p>Yes, and it stays free. Pro is for running the checks automatically.</p>
+  <h3>Can I put it in a public repository?</h3>
+  <p>Yes, you can commit it to your own repositories, public or private, so your CI can run it. You just can't resell it or publish it as your own tool.</p>
+  <h3>What if it does not work for me?</h3>
+  <p>Email <a href="mailto:support@kitebytestudio.com">support@kitebytestudio.com</a>. If we can't fix it, you get a full refund within 14 days. See the <a href="../legal/refunds.html">refund policy</a>.</p>
+</main>
+
+<footer>
+  <p>Permistry is made by Kitebyte. It is not affiliated with Mojang, Microsoft, PaperMC or SpigotMC.</p>
+  <p><a href="../legal/terms.html">Terms</a> · <a href="../legal/privacy.html">Privacy</a> · <a href="../legal/refunds.html">Refunds</a> · <a href="../legal/contact.html">Contact</a> · <a href="mailto:support@kitebytestudio.com">support@kitebytestudio.com</a></p>
+</footer>
+</body>
+</html>
