@@ -271,3 +271,17 @@ footer p { margin: 4px 0; }
 .error-list li { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; }
 .error-list a { font-weight: 600; }
 .error-list p { margin: 4px 0 0; font-size: 0.92rem; }
+
+/* custom plugins page */
+.doc.wide { max-width: 1000px; }
+.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 24px 0 8px; }
+.plan { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.plan.featured { border-color: var(--accent); }
+.plan h2 { margin: 0; font-size: 1.1rem; }
+.plan .price { margin: 4px 0 10px; font-size: 2rem; font-weight: 700; color: var(--text); }
+.plan ul { margin: 0; padding-left: 18px; color: var(--muted); }
+.plan li { margin: 4px 0; }
+.steps { color: var(--muted); padding-left: 20px; }
+.steps li { margin: 8px 0; }
+.doc h3 { font-size: 1rem; margin: 18px 0 4px; }
+.pro-note { margin-top: 18px; padding: 14px 16px; border: 1px dashed var(--line); border-radius: 10px; color: var(--muted); }
