@@ -92,7 +92,7 @@ ${list}
 `,
 }));
 
-const urls = ['', 'errors/', ...ERRORS.map((e) => `errors/${e.slug}.html`), 'plugins/', 'legal/terms.html', 'legal/privacy.html', 'legal/refunds.html', 'legal/contact.html'];
+const urls = ['', 'errors/', ...ERRORS.map((e) => `errors/${e.slug}.html`), 'legal/terms.html', 'legal/privacy.html', 'legal/refunds.html', 'legal/contact.html'];
 writeFileSync(new URL('sitemap.xml', root), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((u) => `  <url><loc>${SITE}${u}</loc></url>`).join('\n')}

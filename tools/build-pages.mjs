@@ -16,7 +16,7 @@ const PAGES = [
 <p>The Permistry checker is free and open source under the MIT license. It runs entirely in your browser. It gives advice based on how Paper 26.3 reads plugin.yml files; other server versions and forks can behave differently. Use the results as guidance and test your plugin on your own server. The checker is provided as is, without any warranty.</p>
 <h2>Paid products and services</h2>
 <p>Paid products and services are described on their own page, with the price and what you get. Orders and payments are processed by <a href="https://www.creem.io">Creem</a>, which acts as the merchant of record: Creem is the seller for the purchase, handles payment, sales tax and VAT, and issues your receipt. Creem's own terms apply to the payment.</p>
-<p>Digital products are delivered by download or email right after payment. For custom work, we agree on the scope in writing before you pay, and deliver within the time stated in the offer.</p>
+<p>Digital products are delivered as downloads in your Creem customer portal right after payment, and the download link is also in your receipt email.</p>
 <h2>Acceptable use</h2>
 <p>Do not use the site or our products to break the law, to attack other people's servers, or to resell our paid products as your own. You keep all rights to the files you check and the plugins we build for you.</p>
 <h2>Refunds</h2>
@@ -48,8 +48,6 @@ const PAGES = [
     body: `
 <h2>Digital products</h2>
 <p>If a digital product does not work as described and we cannot fix it, you get a full refund. Ask within 14 days of purchase.</p>
-<h2>Custom work</h2>
-<p>If we have not started the work yet, you can cancel for a full refund. If we cannot deliver what we agreed, or miss the agreed date and you do not want to wait, you get a full refund. Once you have accepted the delivered work, it is not refundable, but bug fixes for what we agreed stay free for 14 days.</p>
 <h2>How to ask</h2>
 <p>Email <a href="mailto:${EMAIL}">${EMAIL}</a> with your order number. Refunds are paid back by Creem to the original payment method, usually within 5 to 10 business days.</p>`,
   },
