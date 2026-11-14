@@ -36,7 +36,9 @@ from the console. The fixtures are in [`tests/fixtures`](../tests/fixtures), and
 | `api-version: '26.9'` (newer than the server) | `Unsupported API version 26.9` |
 | `api-version: 26.10` without quotes | `Unsupported API version 26.10` (the value is kept as text, see below) |
 | Dependency that is not installed | `Unknown/missing dependency plugins: [NoSuchPluginXyz]` |
+| Two jars in `plugins/` declare the same `name` (e.g. an old and a new build of the same plugin) | `[ModernPluginLoadingStrategy] Ambiguous plugin name 'X' for files '...' and '...' in 'plugins'`. One jar loads, the other is skipped; server keeps starting. |
 | paper-plugin.yml without `api-version` | `[api-version] of type org.bukkit.craftbukkit.util.ApiVersion: A value is required for this field` |
+| Jar with neither `plugin.yml` nor `paper-plugin.yml` at its top level | `Directory 'plugins\<file>.jar' does not contain a paper-plugin.yml or plugin.yml! Could not determine plugin type, cannot load a plugin from it!` |
 
 ## The plugin loads, but part of it is missing
 

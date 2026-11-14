@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does not contain a paper-plugin.yml or plugin.yml | plugin.yml fix</title>
+<meta name="description" content="The server opened the jar and found no plugin.yml or paper-plugin.yml at all, so it cannot tell what kind of plugin it is and skips it entirely.">
+<link rel="canonical" href="https://kitebytestudio.com/errors/does-not-contain-a-plugin-yml.html">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../" aria-label="Permistry home">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 6 13h10z" fill="#FF8C42"/><path d="M16 2l10 11H16z" fill="#2EC4B6"/><path d="M6 13l10 15V13z" fill="#2EC4B6"/><path d="M26 13 16 28V13z" fill="#FF8C42"/><path d="M16 28c-1 2 1 2 0 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    <span>Permistry</span>
+  </a>
+  <nav>
+    <a href="./">Server errors</a>
+    <a href="../">Check a plugin.yml</a>
+  </nav>
+</header>
+<main class="doc">
+
+<p class="crumb"><a href="./">Paper and Spigot plugin.yml errors</a></p>
+<h1>&quot;... does not contain a paper-plugin.yml or plugin.yml! Could not determine plugin type, cannot load a plugin from it!&quot;</h1>
+<div class="server"><span>Server log</span><pre>[DirectoryProviderSource] Error loading plugin: java.lang.IllegalArgumentException: Directory 'plugins\MyFile.jar' does not contain a paper-plugin.yml or plugin.yml! Could not determine plugin type, cannot load a plugin from it!</pre></div>
+<h2>What it means</h2>
+<p>The server opened this jar looking for a plugin and found neither a <code>plugin.yml</code> nor a <code>paper-plugin.yml</code> inside it. Without one of these files the server has no way to know the plugin's name, version or main class, so it refuses to load the jar at all. Everything else on the server keeps running.</p>
+<h2>What causes it</h2>
+<p>The most common cause is a jar that is not a server plugin: a client-side mod, a plain library, a Maven/Gradle dependency, or a build output copied into <code>plugins</code> by mistake. It can also happen with a real plugin whose <code>plugin.yml</code> ended up in a sub-folder inside the jar instead of at the top level, which is the same mistake "The jar has no plugin.yml" on this checker reports from your build output.</p>
+<h2>How to fix it</h2>
+<p>Open the jar with any zip tool and look at the top level. If there is no <code>plugin.yml</code> or <code>paper-plugin.yml</code> there, the jar is not a Paper/Spigot plugin and does not belong in the <code>plugins</code> folder &mdash; remove it. If you built the jar yourself, make sure <code>plugin.yml</code> sits directly in <code>src/main/resources</code> (not in a sub-folder) so it ends up at the jar's root.</p>
+<div class="cta">
+  <p><strong>Check the whole file.</strong> Paste your plugin.yml or drop the plugin jar into Permistry. It finds this and about 40 other problems, and explains each one in plain words. It runs in your browser and nothing is uploaded.</p>
+  <a class="button" href="../">Open the checker</a>
+</div>
+
+</main>
+<footer>
+  <p>Permistry is made by Kitebyte. It is not affiliated with Mojang, Microsoft, PaperMC or SpigotMC.</p>
+  <p>Every error on this site was reproduced on Paper 26.3 (build 249). <a href="https://github.com/kitebyte-studio/permistry/blob/main/docs/paper-behaviour.md">Test results</a>.</p>
+  <p><a href="../legal/terms.html">Terms</a> · <a href="../legal/privacy.html">Privacy</a> · <a href="../legal/refunds.html">Refunds</a> · <a href="../legal/contact.html">Contact</a> · <a href="mailto:support@kitebytestudio.com">support@kitebytestudio.com</a></p>
+</footer>
+</body>
+</html>

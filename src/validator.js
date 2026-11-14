@@ -841,7 +841,7 @@ export function checkJar(result, { names, mainMajor, ymlName }) {
   if (!ymlName) {
     add('refuse', 'jar-no-yml', 'The jar has no plugin.yml',
       'The server only loads jars with plugin.yml (or paper-plugin.yml) at the top level of the jar. Check that it is in src/main/resources and not in a sub-folder.',
-      { server: 'Jar does not contain plugin.yml' });
+      { server: "does not contain a paper-plugin.yml or plugin.yml! Could not determine plugin type, cannot load a plugin from it!" });
   } else {
     if (names.has('plugin.yml') && names.has('paper-plugin.yml')) {
       add('tip', 'jar-both', 'The jar has both plugin.yml and paper-plugin.yml', 'Paper uses paper-plugin.yml and ignores plugin.yml. Spigot uses plugin.yml.');

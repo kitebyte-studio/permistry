@@ -46,6 +46,8 @@
   <li><a href="unknown-missing-dependency-plugins.html">&quot;Unknown/missing dependency plugins&quot;</a><p>The required plugin is missing, or the name in <code>depend</code> does not match the other plugin&#39;s <code>name</code> exactly (case matters).</p></li>
   <li><a href="paper-plugin-api-version-value-required.html">paper-plugin.yml: &quot;[api-version] ... A value is required for this field&quot;</a><p>paper-plugin.yml has no <code>api-version</code>.</p></li>
   <li><a href="classnotfoundexception-main-class.html">ClassNotFoundException for the plugin main class</a><p>A typo in <code>main</code>, a package that was renamed without updating plugin.yml, or a jar built without the compiled classes.</p></li>
+  <li><a href="ambiguous-plugin-name.html">&quot;Ambiguous plugin name ... for files ... in &#39;plugins&#39;&quot;</a><p>Two jars in your <code>plugins</code> folder declare the same plugin name, usually an old copy left next to a new one. The server loads one and silently skips the other.</p></li>
+  <li><a href="does-not-contain-a-plugin-yml.html">&quot;... does not contain a paper-plugin.yml or plugin.yml!&quot;</a><p>The jar has neither file at its top level. Usually a non-plugin jar dropped into <code>plugins</code> by mistake.</p></li>
 </ul>
 
 </main>
