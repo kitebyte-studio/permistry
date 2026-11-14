@@ -48,6 +48,7 @@
   <li><a href="classnotfoundexception-main-class.html">ClassNotFoundException for the plugin main class</a><p>A typo in <code>main</code>, a package that was renamed without updating plugin.yml, or a jar built without the compiled classes.</p></li>
   <li><a href="ambiguous-plugin-name.html">&quot;Ambiguous plugin name ... for files ... in &#39;plugins&#39;&quot;</a><p>Two jars in your <code>plugins</code> folder declare the same plugin name, usually an old copy left next to a new one. The server loads one and silently skips the other.</p></li>
   <li><a href="does-not-contain-a-plugin-yml.html">&quot;... does not contain a paper-plugin.yml or plugin.yml!&quot;</a><p>The jar has neither file at its top level. Usually a non-plugin jar dropped into <code>plugins</code> by mistake.</p></li>
+  <li><a href="unsupportedclassversionerror.html">&quot;UnsupportedClassVersionError ... compiled by a more recent version of the Java Runtime&quot;</a><p>The plugin was built for a newer Java than your server runs. That plugin is skipped; the server keeps starting.</p></li>
 </ul>
 
 </main>

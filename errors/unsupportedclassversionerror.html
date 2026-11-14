@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UnsupportedClassVersionError in a Minecraft plugin | plugin.yml fix</title>
+<meta name="description" content="The plugin was compiled for a newer Java than your server runs. It will not load until you update Java or use a build made for your Java version.">
+<link rel="canonical" href="https://kitebytestudio.com/errors/unsupportedclassversionerror.html">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../" aria-label="Permistry home">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 6 13h10z" fill="#FF8C42"/><path d="M16 2l10 11H16z" fill="#2EC4B6"/><path d="M6 13l10 15V13z" fill="#2EC4B6"/><path d="M26 13 16 28V13z" fill="#FF8C42"/><path d="M16 28c-1 2 1 2 0 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    <span>Permistry</span>
+  </a>
+  <nav>
+    <a href="./">Server errors</a>
+    <a href="../">Check a plugin.yml</a>
+  </nav>
+</header>
+<main class="doc">
+
+<p class="crumb"><a href="./">Paper and Spigot plugin.yml errors</a></p>
+<h1>&quot;UnsupportedClassVersionError ... compiled by a more recent version of the Java Runtime&quot;</h1>
+<div class="server"><span>Server log</span><pre>[ModernPluginLoadingStrategy] Could not load plugin 'MyPlugin.jar' in folder 'plugins'
+org.bukkit.plugin.InvalidPluginException: java.lang.UnsupportedClassVersionError: com/example/MyPlugin has been compiled by a more recent version of the Java Runtime (class file version 70.0), this version of the Java Runtime only recognizes class file versions up to 69.0</pre></div>
+<h2>What it means</h2>
+<p>The plugin was built for a newer version of Java than the one your server runs on. Java refuses to read the plugin's code, so that one plugin is skipped. The server itself keeps starting and the other plugins load normally.</p>
+<h2>What causes it</h2>
+<p>The two numbers in the message are Java versions in disguise: 65 is Java 21, 66 is Java 22, and so on, one more per release (69 is Java 25, 70 is Java 26). If the first number is higher than the second, the plugin author compiled with a newer Java than your server uses.</p>
+<h2>How to fix it</h2>
+<p>You have two options. Either update the Java that runs your server to the version the plugin needs (the first number in the message), or download an older release of the plugin that was built for your Java version. If you are the plugin author, compile with a lower <code>release</code> level, for example <code>options.release = 21</code> in Gradle, so the jar runs on servers that have not upgraded yet.</p>
+<div class="cta">
+  <p><strong>Check the whole file.</strong> Paste your plugin.yml or drop the plugin jar into Permistry. It finds this and about 40 other problems, and explains each one in plain words. It runs in your browser and nothing is uploaded.</p>
+  <a class="button" href="../">Open the checker</a>
+</div>
+
+</main>
+<footer>
+  <p>Permistry is made by Kitebyte. It is not affiliated with Mojang, Microsoft, PaperMC or SpigotMC.</p>
+  <p>Every error on this site was reproduced on Paper 26.3 (build 249). <a href="https://github.com/kitebyte-studio/permistry/blob/main/docs/paper-behaviour.md">Test results</a>.</p>
+  <p><a href="../legal/terms.html">Terms</a> · <a href="../legal/privacy.html">Privacy</a> · <a href="../legal/refunds.html">Refunds</a> · <a href="../legal/contact.html">Contact</a> · <a href="mailto:support@kitebytestudio.com">support@kitebytestudio.com</a></p>
+</footer>
+</body>
+</html>

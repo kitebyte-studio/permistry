@@ -37,6 +37,7 @@ from the console. The fixtures are in [`tests/fixtures`](../tests/fixtures), and
 | `api-version: 26.10` without quotes | `Unsupported API version 26.10` (the value is kept as text, see below) |
 | Dependency that is not installed | `Unknown/missing dependency plugins: [NoSuchPluginXyz]` |
 | Two jars in `plugins/` declare the same `name` (e.g. an old and a new build of the same plugin) | `[ModernPluginLoadingStrategy] Ambiguous plugin name 'X' for files '...' and '...' in 'plugins'`. One jar loads, the other is skipped; server keeps starting. |
+| Plugin jar compiled for a newer Java than the server runs (class file version 70 on Java 25) | `[ModernPluginLoadingStrategy] Could not load plugin 'X.jar' in folder 'plugins'` + `UnsupportedClassVersionError: ... has been compiled by a more recent version of the Java Runtime (class file version 70.0), this version of the Java Runtime only recognizes class file versions up to 69.0`. Only that plugin is skipped; server starts. |
 | paper-plugin.yml without `api-version` | `[api-version] of type org.bukkit.craftbukkit.util.ApiVersion: A value is required for this field` |
 | Jar with neither `plugin.yml` nor `paper-plugin.yml` at its top level | `Directory 'plugins\<file>.jar' does not contain a paper-plugin.yml or plugin.yml! Could not determine plugin type, cannot load a plugin from it!` |
 
