@@ -25,6 +25,9 @@ from the console. The fixtures are in [`tests/fixtures`](../tests/fixtures), and
 | `name: minecraft` (also `bukkit`, `mojang`, `spigot`, `paper`) | `Restricted name, cannot use minecraft as a plugin name.` |
 | `main: org.bukkit.Foo` | `main may not be within the org.bukkit namespace` |
 | `main` points to a class that is not in the jar | `java.lang.ClassNotFoundException` |
+| `main` points to a class that is in the jar but does not extend `JavaPlugin` | ``[ModernPluginLoadingStrategy] Could not load plugin 'X.jar' in folder 'plugins'`` + ``InvalidPluginException: main class `com.example.NotAPlugin' must extend JavaPlugin``. Only that plugin is skipped; server starts. |
+| No `name` | `name is not defined` |
+| No `main` | `main is not defined` |
 | No `version` | `version is not defined` |
 | `depend: Vault` (text instead of a list) | `depend is of wrong type` |
 | `softdepend: Vault` | `softdepend is of wrong type` |
