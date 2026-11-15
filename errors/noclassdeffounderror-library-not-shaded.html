@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NoClassDefFoundError in onEnable: library not shaded into the plugin jar</title>
+<meta name="description" content="Error occurred while enabling, java.lang.NoClassDefFoundError: the plugin uses a library that is not inside its jar. How to shade it or load it with the libraries section.">
+<link rel="canonical" href="https://kitebytestudio.com/errors/noclassdeffounderror-library-not-shaded.html">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../" aria-label="Permistry home">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 6 13h10z" fill="#FF8C42"/><path d="M16 2l10 11H16z" fill="#2EC4B6"/><path d="M6 13l10 15V13z" fill="#2EC4B6"/><path d="M26 13 16 28V13z" fill="#FF8C42"/><path d="M16 28c-1 2 1 2 0 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    <span>Permistry</span>
+  </a>
+  <nav>
+    <a href="./">Server errors</a>
+    <a href="../">Check a plugin.yml</a>
+  </nav>
+</header>
+<main class="doc">
+
+<p class="crumb"><a href="./">Paper and Spigot plugin.yml errors</a></p>
+<h1>&quot;java.lang.NoClassDefFoundError&quot; when the plugin is enabled</h1>
+<div class="server"><span>Server log</span><pre>[ShopPlugin] Enabling ShopPlugin v1.0
+Error occurred while enabling ShopPlugin v1.0 (Is it up to date?)
+java.lang.NoClassDefFoundError: com/example/lib/Helper
+	at ShopPlugin.jar//com.example.shop.ShopPlugin.onEnable(ShopPlugin.java:4)
+Caused by: java.lang.ClassNotFoundException: com.example.lib.Helper
+[ShopPlugin] Disabling ShopPlugin v1.0</pre></div>
+<h2>What it means</h2>
+<p>The plugin was compiled against a class that is not there when the server runs it. Compiling worked because the library was on your build classpath, but it never made it into the jar. The plugin loads, crashes in <code>onEnable()</code> (or later, the first time that code runs) and is disabled. The server keeps running.</p>
+<p>The class name after <code>NoClassDefFoundError</code> tells you which library is missing. The &quot;Is it up to date?&quot; part is a generic hint the server adds to every crash during enabling.</p>
+<h2>What causes it</h2>
+<ul>
+<li>a library is added as a normal dependency (<code>implementation</code> in Gradle, <code>compile</code> scope in Maven) but the build makes a plain jar, so the library classes are not packed in;</li>
+<li>you copied the wrong file from <code>build/libs</code> or <code>target</code>: the small jar instead of the one with <code>-all</code> or the shaded one;</li>
+<li>the library belongs to another plugin (an API jar marked <code>compileOnly</code> / <code>provided</code>), but that plugin is not installed or is not in <code>depend:</code>, so it loads after yours or not at all.</li>
+</ul>
+<h2>How to fix it</h2>
+<p>Pick one of these, depending on the library:</p>
+<ul>
+<li><strong>Shade it.</strong> With Gradle, apply the Shadow plugin and copy the <code>-all</code> jar to the server. With Maven, add maven-shade-plugin. Relocate the package so it does not clash with other plugins that ship the same library.</li>
+<li><strong>Let the server download it.</strong> For libraries on Maven Central, list them in plugin.yml and keep them out of the jar:
+<pre>libraries:
+  - com.example:helper-lib:1.2.0</pre></li>
+<li><strong>It comes from another plugin.</strong> Install that plugin and add it to <code>depend:</code> (or <code>softdepend:</code> if your plugin can work without it), so it is loaded first.</li>
+</ul>
+<p>To see what is really in the jar, open it as a zip and look for the missing class path, for example <code>com/example/lib/Helper.class</code>.</p>
+<div class="cta">
+  <p><strong>Check the whole file.</strong> Paste your plugin.yml or drop the plugin jar into Permistry. It finds about 40 common problems, including bad <code>libraries:</code> coordinates and wrong <code>depend:</code> entries. It runs in your browser and nothing is uploaded.</p>
+  <a class="button" href="../">Open the checker</a>
+</div>
+
+</main>
+<footer>
+  <p>Permistry is made by Kitebyte. It is not affiliated with Mojang, Microsoft, PaperMC or SpigotMC.</p>
+  <p>Every error on this site was reproduced on Paper 26.3 (build 249). <a href="https://github.com/kitebyte-studio/permistry/blob/main/docs/paper-behaviour.md">Test results</a>.</p>
+  <p><a href="../legal/terms.html">Terms</a> · <a href="../legal/privacy.html">Privacy</a> · <a href="../legal/refunds.html">Refunds</a> · <a href="../legal/contact.html">Contact</a> · <a href="mailto:support@kitebytestudio.com">support@kitebytestudio.com</a></p>
+</footer>
+</body>
+</html>

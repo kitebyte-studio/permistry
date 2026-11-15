@@ -29,6 +29,7 @@
   <url><loc>https://kitebytestudio.com/errors/main-class-must-extend-javaplugin.html</loc></url>
   <url><loc>https://kitebytestudio.com/errors/getcommand-returns-null.html</loc></url>
   <url><loc>https://kitebytestudio.com/errors/mapping-values-are-not-allowed-here.html</loc></url>
+  <url><loc>https://kitebytestudio.com/errors/noclassdeffounderror-library-not-shaded.html</loc></url>
   <url><loc>https://kitebytestudio.com/legal/terms.html</loc></url>
   <url><loc>https://kitebytestudio.com/legal/privacy.html</loc></url>
   <url><loc>https://kitebytestudio.com/legal/refunds.html</loc></url>
