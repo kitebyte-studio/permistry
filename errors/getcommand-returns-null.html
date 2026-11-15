@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>getCommand(...) is null: NullPointerException in onEnable | plugin.yml fix</title>
+<meta name="description" content="Cannot invoke PluginCommand.setExecutor because getCommand is null. The command is used in code but missing from the commands section of plugin.yml.">
+<link rel="canonical" href="https://kitebytestudio.com/errors/getcommand-returns-null.html">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../" aria-label="Permistry home">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 6 13h10z" fill="#FF8C42"/><path d="M16 2l10 11H16z" fill="#2EC4B6"/><path d="M6 13l10 15V13z" fill="#2EC4B6"/><path d="M26 13 16 28V13z" fill="#FF8C42"/><path d="M16 28c-1 2 1 2 0 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+    <span>Permistry</span>
+  </a>
+  <nav>
+    <a href="./">Server errors</a>
+    <a href="../">Check a plugin.yml</a>
+  </nav>
+</header>
+<main class="doc">
+
+<p class="crumb"><a href="./">Paper and Spigot plugin.yml errors</a></p>
+<h1>&quot;Cannot invoke PluginCommand.setExecutor ... because getCommand(String) is null&quot;</h1>
+<div class="server"><span>Server log</span><pre>[MyPlugin] Enabling MyPlugin v1.0
+Error occurred while enabling MyPlugin v1.0 (Is it up to date?)
+java.lang.NullPointerException: Cannot invoke "org.bukkit.command.PluginCommand.setExecutor(org.bukkit.command.CommandExecutor)" because the return value of "com.example.MyPlugin.getCommand(String)" is null
+	at com.example.MyPlugin.onEnable(MyPlugin.java:8)
+[MyPlugin] Disabling MyPlugin v1.0</pre></div>
+<h2>What it means</h2>
+<p>Your code asked for a command with <code>getCommand("name")</code>, but the server does not know a command with that name, so it got nothing back. The plugin loads, crashes in <code>onEnable()</code> and is disabled right away. The server itself keeps running, but none of that plugin's features work.</p>
+<p>The &quot;Is it up to date?&quot; part is a generic hint the server adds to every crash during enabling. Here the plugin is not outdated; the problem is in plugin.yml.</p>
+<h2>What causes it</h2>
+<p>For a plugin that uses plugin.yml, <code>getCommand()</code> only returns commands listed in its <code>commands:</code> section. The usual reasons:</p>
+<ul>
+<li>the command is used in code but was never added to plugin.yml;</li>
+<li>the name differs, for example <code>getCommand("spawnShop")</code> in code and <code>spawnshop:</code> in the file, or a typo;</li>
+<li>the command is written under the wrong indentation, so it is not inside <code>commands:</code>.</li>
+</ul>
+<h2>How to fix it</h2>
+<p>Add the command to plugin.yml with exactly the same name your code uses:</p>
+<pre>commands:
+  spawnshop:
+    description: Opens the spawn shop
+    usage: /spawnshop</pre>
+<p>Rebuild the jar and restart the server. If you add commands at runtime and do not want them in plugin.yml, check the result for <code>null</code> before calling <code>setExecutor</code>, so one missing command does not take the whole plugin down.</p>
+<div class="cta">
+  <p><strong>Check the whole file.</strong> Paste your plugin.yml or drop the plugin jar into Permistry. It finds about 40 common problems and explains each one in plain words. It runs in your browser and nothing is uploaded.</p>
+  <a class="button" href="../">Open the checker</a>
+</div>
+
+</main>
+<footer>
+  <p>Permistry is made by Kitebyte. It is not affiliated with Mojang, Microsoft, PaperMC or SpigotMC.</p>
+  <p>Every error on this site was reproduced on Paper 26.3 (build 249). <a href="https://github.com/kitebyte-studio/permistry/blob/main/docs/paper-behaviour.md">Test results</a>.</p>
+  <p><a href="../legal/terms.html">Terms</a> · <a href="../legal/privacy.html">Privacy</a> · <a href="../legal/refunds.html">Refunds</a> · <a href="../legal/contact.html">Contact</a> · <a href="mailto:support@kitebytestudio.com">support@kitebytestudio.com</a></p>
+</footer>
+</body>
+</html>

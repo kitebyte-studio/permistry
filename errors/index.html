@@ -50,6 +50,7 @@
   <li><a href="does-not-contain-a-plugin-yml.html">&quot;... does not contain a paper-plugin.yml or plugin.yml!&quot;</a><p>The jar has neither file at its top level. Usually a non-plugin jar dropped into <code>plugins</code> by mistake.</p></li>
   <li><a href="unsupportedclassversionerror.html">&quot;UnsupportedClassVersionError ... compiled by a more recent version of the Java Runtime&quot;</a><p>The plugin was built for a newer Java than your server runs. That plugin is skipped; the server keeps starting.</p></li>
   <li><a href="main-class-must-extend-javaplugin.html">&quot;main class ... must extend JavaPlugin&quot;</a><p><code>main</code> points at a class that exists in the jar but is not the plugin's main class, for example a listener or a helper.</p></li>
+  <li><a href="getcommand-returns-null.html">&quot;Cannot invoke PluginCommand.setExecutor ... getCommand(String) is null&quot;</a><p>The code uses a command that is not in the <code>commands:</code> section of plugin.yml. The plugin crashes in <code>onEnable()</code> and is disabled.</p></li>
 </ul>
 
 </main>
