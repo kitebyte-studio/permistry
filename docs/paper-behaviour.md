@@ -37,6 +37,7 @@ from the console. The fixtures are in [`tests/fixtures`](../tests/fixtures), and
 | `commands: kitehello` (text instead of a section) | `commands are of wrong type` |
 | `libraries: [notacoord]` | `Bad artifact coordinates notacoord, expected format is <groupId>:<artifactId>[:<extension>[:<classifier>]]:<version>` |
 | Tab used for indentation | `found character '\t(TAB)' that cannot start any token. (Do not use \t(TAB) for indentation)` |
+| `description: Shop plugin. Usage: /shop open` (colon + space inside an unquoted value) | `Error loading plugin: Invalid plugin.yml` + `Caused by: mapping values are not allowed here in 'reader', line 5, column 32`. Only that plugin is skipped; server starts. |
 | `api-version: '26.9'` (newer than the server) | `Unsupported API version 26.9` |
 | `api-version: 26.10` without quotes | `Unsupported API version 26.10` (the value is kept as text, see below) |
 | Dependency that is not installed | `Unknown/missing dependency plugins: [NoSuchPluginXyz]` |
