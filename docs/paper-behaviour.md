@@ -28,9 +28,9 @@ from the console. The fixtures are in [`tests/fixtures`](../tests/fixtures), and
 | `main` points to a class that is in the jar but does not extend `JavaPlugin` | ``[ModernPluginLoadingStrategy] Could not load plugin 'X.jar' in folder 'plugins'`` + ``InvalidPluginException: main class `com.example.NotAPlugin' must extend JavaPlugin``. Only that plugin is skipped; server starts. |
 | Code calls `getCommand("spawnshop")`, but `spawnshop` is not under `commands:` | Plugin loads, then `Error occurred while enabling X (Is it up to date?)` + `NullPointerException: Cannot invoke "org.bukkit.command.PluginCommand.setExecutor(...)" because the return value of "...getCommand(String)" is null`, then `Disabling X`. Server starts. |
 | Main class uses a library class that is not inside the jar (compiled against it, not shaded) | Plugin loads, then `Error occurred while enabling X (Is it up to date?)` + `java.lang.NoClassDefFoundError: com/example/lib/Helper`, `Caused by: java.lang.ClassNotFoundException`, then `Disabling X`. Server starts. |
-| No `name` | `name is not defined` |
-| No `main` | `main is not defined` |
-| No `version` | `version is not defined` |
+| No `name` | `[DirectoryProviderSource] Error loading plugin: name is not defined` + `org.bukkit.plugin.InvalidDescriptionException: name is not defined`. Only that plugin is skipped; server starts. |
+| No `main` | `[DirectoryProviderSource] Error loading plugin: main is not defined` + `org.bukkit.plugin.InvalidDescriptionException: main is not defined`. Only that plugin is skipped; server starts. |
+| No `version` | `[DirectoryProviderSource] Error loading plugin: version is not defined` + `org.bukkit.plugin.InvalidDescriptionException: version is not defined`. Only that plugin is skipped; server starts. |
 | `depend: Vault` (text instead of a list) | `depend is of wrong type` |
 | `softdepend: Vault` | `softdepend is of wrong type` |
 | `authors: Kitebyte` (text instead of a list) | `authors are of wrong type` |

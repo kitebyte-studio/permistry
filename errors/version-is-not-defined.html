@@ -25,9 +25,10 @@
 
 <p class="crumb"><a href="./">Paper and Spigot plugin.yml errors</a></p>
 <h1>&quot;version is not defined&quot; (also &quot;name is not defined&quot;, &quot;main is not defined&quot;)</h1>
-<div class="server"><span>Server log</span><pre>org.bukkit.plugin.InvalidDescriptionException: version is not defined</pre></div>
+<div class="server"><span>Server log</span><pre>[DirectoryProviderSource] Error loading plugin: version is not defined
+org.bukkit.plugin.InvalidDescriptionException: version is not defined</pre></div>
 <h2>What it means</h2>
-<p>One of the three required keys is missing, so the server cannot load the plugin. The message names the missing key.</p>
+<p>One of the three required keys is missing, so the server cannot load the plugin. The message names the missing key. The server skips that one plugin and still finishes starting, so everything else keeps working.</p>
 <h2>What causes it</h2>
 <p>plugin.yml has no <code>version</code> (or <code>name</code>, or <code>main</code>). It also happens when the key is there but misspelled or indented under another key.</p>
 <h2>How to fix it</h2>
